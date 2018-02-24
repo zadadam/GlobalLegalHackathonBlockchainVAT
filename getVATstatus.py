@@ -2,20 +2,22 @@ import sys
 
 
 def getVATstatus(nip):
-    """
-
-    :param nip: string jako int
-    :return:
-    """
-
-    # TODO: kazdy podatnik za wyjatkiem tych, ktorych nip %7 ==0 jest OK
+    nip=int(nip)
+    czy_VAT=True
+    if nip%7==0:
+        czy_VAT=False
+        
     response = {
-        'nip' : nip,
-        'czypotarnikVAT' :
+            'nip' : nip,
+            'czypodatnikVAT' : czy_VAT
 
-    }
+                    }
 
     return response
+
+print getVATstatus(177)
+print getVATstatus(49)
+
 
 if __name__ == "__main__":
     pass
