@@ -39,5 +39,5 @@ def getVATstatus(nip):
     return nip, wynik
 
 if __name__ == "__main__":
-    for nip in ["5252128067", "5261032852"]
+    for nip in ["5252128067", "5261032852"]:
         print getVATstatus(nip)
