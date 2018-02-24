@@ -87,10 +87,19 @@ def createABlock(data):
     saveBlock(path, newBlock)
     return newBlock, hashdane, path
 
+def checksum(nip):
+    suma=0
+    weights = [6, 5, 7, 2, 3, 4, 5, 6, 7]
+    for i in xrange(9):
+        suma+=int(nip[i])*weights[i]
+    return suma % 11
+
 
 if __name__ == "__main__":
-    for nip in ["5252128067", "5261032852"]:
-        #nip = np.random.randint(200)
+    nip=raw_input('Enter NIP: ')
+    if len(nip)!=10 or int(nip[9])!=checksum(nip):
+        print 'NIP is not correct'
+    else:
         status = getVATstatusSelenium.getVATstatus(nip)
         newBlock, hashdane, path = createABlock(status)
         print newBlock
