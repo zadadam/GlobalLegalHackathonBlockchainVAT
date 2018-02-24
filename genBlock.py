@@ -42,24 +42,29 @@ def getLastBlock():
 
     #if no last block was in the memory
 
-    listofBlocks = glob.glob("storage/*.block")
+    listofBlocksStr = glob.glob(storage + "/*.block")
 
+    listofBlocks = map(lambda x : int(x.split("/")[1].split(".")[0]), listofBlocksStr)
+    #print listofBlocks
     if not listofBlocks:
         return None
     else:
         listofBlocks.sort()
         listofBlocks.reverse()
-        lastBlock = readBlock(listofBlocks[0])
+        lastBlock = readBlock(storage + "/" + str(listofBlocks[0]) + ".block")
         info.lastBlock = lastBlock
+        print lastBlock
         return lastBlock
 
 def createABlock(data):
     lastBlock = getLastBlock()
+
     lastBlockHash = 0
     lastNumber = 0
     if lastBlock:
         lastBlockHash = lastBlock['hash']
         lastNumber = lastBlock['nr']
+        #print lastNumber
 
     timestamp = time.time()
     hashdane = hashlib.sha256(str(data)).hexdigest()
@@ -73,17 +78,19 @@ def createABlock(data):
         'lasthash' : lastBlockHash
     }
 
-    path = storage + str(number) + ".block"
+    path = storage + "/" + str(number) + ".block"
 
-    print newBlock
+    #print newBlock
     info.lastBlock = newBlock
-
+    #print path
+    saveBlock(path, newBlock)
     return newBlock, hashdane, path
 
 
 if __name__ == "__main__":
-    for i in xrange(100):
+    for i in xrange(10):
         nip = np.random.randint(200)
         status = getVATstatus.getVATstatus(nip)
         newBlock, hashdane, path = createABlock(status)
+        print newBlock
 
