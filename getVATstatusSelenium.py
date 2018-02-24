@@ -16,11 +16,11 @@ def getVATstatus(nip):
     driver = webdriver.Chrome("./chromedriver")
     driver.get("https://ppuslugi.mf.gov.pl/")
 
-    time.sleep(10)
+    time.sleep(7)
     elem = driver.find_element_by_class_name("SidebarLinkChVAT")
     elem.click()
 
-    time.sleep(5)
+    time.sleep(3)
     elem = driver.find_element_by_id("b-7")
     elem.send_keys(nip)
     #elem.send_keys("5252128067") # Witkacy
@@ -36,7 +36,7 @@ def getVATstatus(nip):
 
     driver.close()
 
-    return nip, wynik
+    return {'nip':nip, 'result':wynik}
 
 if __name__ == "__main__":
     for nip in ["5252128067", "5261032852"]:

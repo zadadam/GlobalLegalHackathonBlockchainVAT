@@ -4,6 +4,7 @@ import sys
 import hashlib
 import time
 import pickle
+import getVATstatusSelenium
 import getVATstatus
 import numpy as np
 
@@ -88,9 +89,9 @@ def createABlock(data):
 
 
 if __name__ == "__main__":
-    for i in xrange(10):
-        nip = np.random.randint(200)
-        status = getVATstatus.getVATstatus(nip)
+    for nip in ["5252128067", "5261032852"]:
+        #nip = np.random.randint(200)
+        status = getVATstatusSelenium.getVATstatus(nip)
         newBlock, hashdane, path = createABlock(status)
         print newBlock
 
