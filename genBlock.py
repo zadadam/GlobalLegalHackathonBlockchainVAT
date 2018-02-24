@@ -4,9 +4,16 @@ import sys
 import hashlib
 import time
 import pickle
+import getVATstatus
+import numpy as np
 
 storage = "Blocks"
-lastBlock = None
+class info:
+    lastBlock = None
+    def __init__(self):
+        self.lastBlock = None
+
+
 
 """
 Block ma strukture:
@@ -21,17 +28,17 @@ hashpoprzedniego blocku:
 
 def readBlock(filename):
     block = None
-    with f as open(filename,"r+"):
+    with open(filename,"r+") as f:
         block = pickle.load(f)
     return block
 
 def saveBlock(filename, block):
-    with f as open(filename, "w+"):
+    with open(filename, "w+") as f:
         pickle.dump(block, f)
 
 def getLastBlock():
-    if lastBlock:
-        return lastBlock
+    if info.lastBlock:
+        return info.lastBlock
 
     #if no last block was in the memory
 
@@ -42,18 +49,20 @@ def getLastBlock():
     else:
         listofBlocks.sort()
         listofBlocks.reverse()
-        return readBlock(listofBlocks[0])
+        lastBlock = readBlock(listofBlocks[0])
+        info.lastBlock = lastBlock
+        return lastBlock
 
 def createABlock(data):
-    lastblock = getLastBlock()
+    lastBlock = getLastBlock()
     lastBlockHash = 0
     lastNumber = 0
-    if lastblock:
+    if lastBlock:
         lastBlockHash = lastBlock['hash']
         lastNumber = lastBlock['nr']
 
     timestamp = time.time()
-    hashdane = hashlib.sha256(data)
+    hashdane = hashlib.sha256(str(data)).hexdigest()
     number = lastNumber + 1
 
     newBlock = {
@@ -66,9 +75,15 @@ def createABlock(data):
 
     path = storage + str(number) + ".block"
 
+    print newBlock
+    info.lastBlock = newBlock
 
     return newBlock, hashdane, path
 
 
 if __name__ == "__main__":
-    pass
+    for i in xrange(100):
+        nip = np.random.randint(200)
+        status = getVATstatus.getVATstatus(nip)
+        newBlock, hashdane, path = createABlock(status)
+
