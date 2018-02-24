@@ -15,8 +15,10 @@ def getVATstatus(nip):
 
     return response
 
-print getVATstatus(177)
-print getVATstatus(49)
+
+def tests():
+    print getVATstatus(177)
+    print getVATstatus(49)
 
 
 if __name__ == "__main__":
